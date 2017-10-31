@@ -1,0 +1,186 @@
+﻿html,body{
+    font-family:"Open Sans",arial,sans-serif;
+}
+/*强制不换行，必须与宽度联合使用*/
+.txt-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 弹出层样式（弹出框，确认框）  */
+.ilidan-dialog-shadow {
+    filter: Alpha(opacity=60);
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    font-size: 16px;
+}
+
+.ilidan-dialog-wrap {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 999;
+    box-sizing: border-box;
+    padding: 20px;
+    background: transparent;
+    display: block;
+}
+
+.ilidan-dialog-wrap .ilidan-dialog-container {
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 500px;
+    height: auto;
+    min-height: 100px;
+    min-width: 500px;
+    padding: 20px;
+    background-color: #FFF;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.ilidan-dialog-wrap .ilidan-dialog-header {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.ilidan-dialog-wrap .ilidan-dialog-content {
+    width: 100%;
+    min-height: 180px;
+    clear: both;
+    border-top: 2px solid #eaf4f8;
+    color: #444;
+}
+
+.ilidan-dialog-content.table-style {
+    padding: 20px 30px 0;
+    border-top: none;
+}
+
+.ilidan-dialog-content input[type=text].form-control, .ilidan-dialog-content input[type=password].form-control {
+    height: auto !important;
+    font-size: 12px !important;
+}
+
+.ilidan-dialog-header span {
+    margin: 0;
+    padding: 0 0 0 20px;
+    font-size: 16px;
+    display: inline-block;
+}
+
+.ilidan-dialog-wrap .ilidan-confirm-header {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-top: -50px;
+}
+
+.ilidan-confirm-icon {
+    width: 100px;
+    height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    margin: -70px auto 0;
+    padding: 16px 0;
+    display: block;
+    text-align: center;
+    border: 1px solid #eaf4f8;
+    position: relative;
+    background: #FFFFFF;
+}
+
+.ilidan-confirm-icon:after {
+    display: block;
+    margin: 0;
+    padding: 0;
+    content: url('/images/delete-data-1.png');
+}
+
+.ilidan-confirm-content {
+    width: 100%;
+    clear: both;
+    color: #444;
+    margin-top: 40px;
+}
+
+.ilidan-confirm-content .txt {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    color: #EA1A0E;
+}
+
+.ilidan-confirm-btns {
+    text-align: center;
+    margin: 50px 0 20px;
+    font-size: 0px;
+}
+
+.ilidan-dialog-close, .ilidan-dialog-close:hover {
+    width: 24px;
+    height: 24px;
+    margin-top: 18px;
+    display: inline-block;
+    float: right;
+    background: url('/images/common/delete.png') no-repeat 0 0;
+}
+.ilidan-dialog-close:hover {
+    background: url('/images/common/delete-hover.png') no-repeat 0 0;
+}
+.fade {
+    opacity: 0;
+    -webkit-transition: opacity .15s linear;
+    -o-transition: opacity .15s linear;
+    transition: opacity .15s linear;
+}
+.fade.in {
+    opacity: 1;
+}
+
+/* ============================================== */
+/* 以上，为公共样式部分，接下来部分是各页面的样式 */
+
+/* 页面样式部分 */
+
+.footer{
+    width:100%;
+    text-align:center;
+    border-top: 2px solid #eaf4f8;
+    margin-top:50px;
+    padding:40px 0 20px;
+}
+.footer > p{
+    padding:0;
+    margin:0;
+    font-weight: bold;
+    font-size: 16px;
+}
