@@ -10,5 +10,4 @@ $route['translate_uri_dashes'] = FALSE;
 $route['logout'] = 'home/logout';
 
 $route['search'] = 'home/index';
-
-$route['user/:num'] = 'user/index';
+$route['message/:num'] = 'home/message';

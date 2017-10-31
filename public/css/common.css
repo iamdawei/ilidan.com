@@ -170,6 +170,18 @@
 /* 以上，为公共样式部分，接下来部分是各页面的样式 */
 
 /* 页面样式部分 */
+.form-control.search-input {
+    width: 100% !important;
+    height: 28px !important;
+    border: none;
+    background: #fff !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-size: 14px !important;
+    color: #231f20 !important;
+    padding: 5px !important;
+    margin-top:12px;
+}
 
 .footer{
     width:100%;

@@ -16,11 +16,7 @@ class Home extends WEB_Conotroller
 
     public function index()
     {
-        $data['HEADER_CSS'] = '<link href="/js/select/css/cs-select.css" rel="stylesheet" type="text/css" />
-                 <link href="/js/select/css/cs-skin-border.css" rel="stylesheet" type="text/css" />';
-
-        $data['FOOTER_JAVASCRIPT'] = '<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>';
-        $this->load->view('header',$data);
+        $pageFile = '';
         $key = $this->input->get('kw');
 
         $limit = 12;
@@ -46,8 +42,9 @@ class Home extends WEB_Conotroller
         $main['total_page'] = ceil($total / $limit);
         $main['show_paginator'] = $show_paginator;
         $main['page_datas'] = $result;
+        $this->load->view('header',$pageFile);
         $this->load->view('home',$main);
-        $this->load->view('footer',$data);
+        $this->load->view('footer',$pageFile);
     }
 
     protected function search_list($key)
@@ -91,6 +88,12 @@ class Home extends WEB_Conotroller
         $assessmentlist['total_page'] = ceil($total / $limit);
 
         $this->ajax_return(200,MESSAGE_SUCCESS,$assessmentlist);
+    }
+
+    public function message(){
+        $this->load->view('header');
+        $this->load->view('message');
+        $this->load->view('footer');
     }
 
     public function login()

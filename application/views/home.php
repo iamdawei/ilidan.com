@@ -1,17 +1,5 @@
 <style type="text/css">
-    .form-control.search-input {
-        width: 100% !important;
-        height: 32px !important;
-        border: none;
-        background: #fff !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        font-size: 16px !important;
-        color: #231f20 !important;
-        padding: 5px !important;
-        margin-top:10px;
-    }
-    .header {
+    .huge {
         margin-top: 50px;
         background-color: #00b185;
         background-color: -moz-linear-gradient(45deg, #00b185 0%, #28cbd3 100%);
@@ -26,14 +14,10 @@
         background-position: center top;
         color: #fff;
     }
-    .header .header__text {
+    .huge .huge__text {
         padding-top: 120px;
         padding-bottom: 160px;
         text-align: center;
-    }
-    .header .header-search{
-        width:500px;
-        margin:0 auto;
     }
     .title-h1 {
         font-size: 32px;
@@ -42,15 +26,15 @@
         text-transform: uppercase;
         padding-bottom: 60px;
     }
-    .header-search .form-control{
+    .huge .huge-search{
+        width:500px;
+        margin:0 auto;
+    }
+    .huge-search .form-control{
         height:40px;
         font-size: 18px;
         border-radius: 0;
         border-color:#1b9af7;
-    }
-    .header-search .btn{
-        font-size: 18px;
-        border-radius: 0;
     }
 
     .list {
@@ -82,11 +66,11 @@
         margin-bottom: 15px;
     }
 </style>
-<div class="header">
+<div class="huge">
     <div class="container">
-        <div class="col-md-12 col-lg-10 col-lg-offset-1 header__text">
-            <div class="title-h1" id="header-title">生活总是坎坷，能少一个是一个</div>
-            <div class="hidden-xs header-search">
+        <div class="col-md-12 col-lg-12 huge__text">
+            <div class="title-h1" id="huge-title">生活总是坎坷，能少一个是一个</div>
+            <div class="hidden-xs huge-search">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="公司名称" id="searchInput" />
                     <span class="input-group-btn">
@@ -99,7 +83,7 @@
 </div>
 
 <div class="container list">
-    <h3 class="text-center"><?php echo $title;?></h3>
+    <h3 class="text-center"><strong><?php echo $title;?></strong></h3>
     <div class="row"><?php
         foreach($page_datas as $data){
 echo  '<div class="col-sm-4 col-xs-12">
