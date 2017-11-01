@@ -1,4 +1,5 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Message_model extends CI_Model
 {
@@ -7,13 +8,14 @@ class Message_model extends CI_Model
         parent::__construct();
     }
 
-    public function get($message_id)
+    public function get($message_id,$where)
     {
         $columns = 'message_id,company_name,company_city,message_content,message_datetime,message_status,count,surname';
         $this->db->select($columns);
         $this->db->from('ili_message');
         $this->db->join('ili_user','ili_user.user_id = ili_message.user_id');
         $this->db->where('message_id',$message_id);
+        $this->db->where($where);
         $res = $this->db->get()->row();
         return $res;
     }
@@ -70,11 +72,11 @@ class Message_model extends CI_Model
         return $this->db->insert_id();
     }
 
-    public function put_up($topic_id,$set)
+    public function put_up($message_id,$set)
     {
-        $this->db->where('topic_id',$topic_id);
-        $this->db->set('topic_up',$set,FALSE);
-        $this->db->update('tt_topic');
+        $this->db->where('message_id',$message_id);
+        $this->db->set('count',$set,FALSE);
+        $this->db->update('ili_message');
         return $this->db->affected_rows();
     }
 

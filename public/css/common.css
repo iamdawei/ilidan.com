@@ -8,7 +8,9 @@
     -o-text-overflow: ellipsis;
     white-space: nowrap;
 }
-
+.txt-shadow{
+    text-shadow:1px 1px 1px #E0E0E0;
+}
 /* 弹出层样式（弹出框，确认框）  */
 .ilidan-dialog-shadow {
     filter: Alpha(opacity=60);

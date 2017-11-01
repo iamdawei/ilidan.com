@@ -2,8 +2,11 @@ $.ajaxSetup({
     headers: {
         'TOKEN': $.cookie('token')
     },
-    error:ilidan_ajax_error
+    dataType:'json',
+    error:ilidan_ajax_error,
+    complete:ilidan_ajax_complete
 });
+
 
 getUrlParam = function (name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");

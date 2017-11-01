@@ -1,4 +1,6 @@
-<div class="clearfix"></div>
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?><div class="clearfix"></div>
 <footer class="footer">
         <p style="font-size: 24px;">ilidan.com</p>
         <p style="font-size: 12px;font-weight: normal;">来自 iam喂喂</p>

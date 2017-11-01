@@ -7,7 +7,8 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //自定义路由规则
-$route['logout'] = 'home/logout';
+$route['logout'] = 'Home/logout';
 
-$route['search'] = 'home/index';
+$route['search'] = 'Home/index';
 $route['message/:num'] = 'home/message';
+$route['message/:num/comment'] = 'message/comment';

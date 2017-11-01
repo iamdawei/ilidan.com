@@ -47,52 +47,24 @@ class Home extends WEB_Conotroller
         $this->load->view('footer',$pageFile);
     }
 
-    protected function search_list($key)
-    {
-        $where['company_name'] = $this->input->get('file_number');
-
-        $is_open = $this->input->get('is_open');
-        if(isset($is_open) && $is_open !== 'all')
-        {
-            $where['is_open'] = $is_open ;
-        }
-
-        $assessment_type = $this->input->get('assessment_type');
-        if(isset($assessment_type) && $assessment_type !== 'all')
-        {
-            $where['assessment_type'] = $assessment_type;
-        }
-
-        $where['page'] = intval($this->input->get('page'));
-        $where['school_id'] = $this->school_id;
-        $where['keywords'] = $this->input->get('keywords');
-
-        //确定每页显示，初始化总条数；
-        $limit = 8;
-        $total = 0;
-
-        //默认起始页；
-        if(empty($where['page'])) { $where['page'] = 1; }
-
-        // 返回数组；
-        $assessmentlist = array();
-        $assessmentlist['data'] = $this->assessment_model->get_list($where, $limit, $total);
-
-        // 返回总条数
-        $assessmentlist['total'] = $total;
-
-        // 返回当前页
-        $assessmentlist['current_page'] = $where['page'];
-
-        // 返回总页数
-        $assessmentlist['total_page'] = ceil($total / $limit);
-
-        $this->ajax_return(200,MESSAGE_SUCCESS,$assessmentlist);
-    }
-
     public function message(){
+        $message_id = $this->uri->segment(2, 0);
+        $this->load->model('Message_model');
+        $result = $this->Message_model->get($message_id,'message_status=1');
+
+        if(!$result){
+            show_404();
+        }
+
+        $message_id = $this->uri->segment(2, 0);
+        $this->load->model('Comment_model');
+        $reComment = $this->Comment_model->get_all($message_id);
+
+        $data['message_info'] = $result;
+        $data['message_comment'] = $reComment;
+        $data['message_id'] = $message_id;
         $this->load->view('header');
-        $this->load->view('message');
+        $this->load->view('message',$data);
         $this->load->view('footer');
     }
 

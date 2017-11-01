@@ -1,4 +1,5 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Comment_model extends CI_Model
 {
@@ -7,16 +8,14 @@ class Comment_model extends CI_Model
         parent::__construct();
     }
 
-    public function get_all($topic_id)
+    public function get_all($message_id)
     {
-        $cols = 'tt_comments.comment_id,comment_content,comment_up,comment_datetime,tt_user.user_name,tt_comments_up.user_id as up_user_id';
+        $cols = 'comment_id,user_surname,user_sex,comment_content';
 
         $this->db->select($cols);
-        $this->db->from('tt_comments');
-        $this->db->where('topic_id', $topic_id);
-        $this->db->join('tt_user','tt_comments.user_id = tt_user.user_id');
-        $this->db->join('tt_comments_up','tt_comments_up.comment_id = tt_comments.comment_id','left');
-        $this->db->order_by('comment_id DESC');
+        $this->db->from('ili_comments');
+        $this->db->where('message_id', $message_id);
+        $this->db->order_by('comment_id ASC');
         return $this->db->get()->result();
     }
 
@@ -45,7 +44,7 @@ class Comment_model extends CI_Model
 
     public  function add($data)
     {
-        $this->db->insert('tt_comments', $data);
+        $this->db->insert('ili_comments', $data);
         return $this->db->insert_id();
     }
 
@@ -53,7 +52,7 @@ class Comment_model extends CI_Model
     {
         $this->db->where('comment_id',$topic_id);
         $this->db->set('comment_up',$set,FALSE);
-        $this->db->update('tt_comments');
+        $this->db->update('ili_comments');
         return $this->db->affected_rows();
     }
 

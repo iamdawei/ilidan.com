@@ -59,6 +59,7 @@ p {
 	<div id="container">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
+		<p><a href="/">回到首页</a></p>
 	</div>
 </body>
 </html>

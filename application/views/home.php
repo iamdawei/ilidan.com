@@ -69,7 +69,7 @@
 <div class="huge">
     <div class="container">
         <div class="col-md-12 col-lg-12 huge__text">
-            <div class="title-h1" id="huge-title">生活总是坎坷，能少一个是一个</div>
+            <div class="title-h1 txt-shadow" id="huge-title">生活总是坎坷，能少一个是一个</div>
             <div class="hidden-xs huge-search">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="公司名称" id="searchInput" />

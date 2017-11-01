@@ -1,4 +1,6 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 /**
  * 自定义的基类
  * 主要包括：
@@ -45,18 +47,7 @@ define('MESSAGE_ERROR_NON_DATA', '数据不存在');
 define('MESSAGE_ERROR_REQUEST_TYPE', '请求方式不正确');
 define('MESSAGE_ERROR_CHANGE_PASSWORD', '您的初始密码不正确');
 define('MESSAGE_ERROR_DATA_WRITE', '数据更新错误');
-define('MESSAGE_ERROR_HAVE_DONE_PASS','本条已审核通过');
-define('MESSAGE_ERROR_HAVE_DONE_REBUT','本条已被驳回');
-define('MESSAGE_ERROR_ENOUGH','本项提交量已达标');
-define('MESSAGE_ERROR_SYSTEM_ROLE_D','内置角色不能被删除');
-define('MESSAGE_ERROR_SYSTEM_ROLE_P','内置角色不能被修改');
-define('MESSAGE_ERROR_HAVE_DATE','该角色下存在用户，不能被删除');
-define('MESSAGE_ERROR_SELF_INFO','这个账户是您本人，不能删除');
-define('MESSAGE_ERROR_NAME_UNIQUE','角色名已存在');
-define('MESSAGE_ERROR_HAVE_DONE_TOREC','本条已被标记存取');
-define('MESSAGE_ERROR_HAVE_DONE_REC','本条已推荐');
-define('MESSAGE_ERROR_HAVE_USER','该学校下存在用户，不能被删除');
-define('MESSAGE_ERROR_HAVE_CHART','本学年已经归档过不能重复');
+
 
 class Base_Controller extends CI_Controller
 {
@@ -70,7 +61,7 @@ class Base_Controller extends CI_Controller
         if(!$token) return false;
         $sign = @unserialize(base64_decode($token));
         if($sign === false) return false;
-        if($sign['open_id'] && $sign['user_id'] && $sign['create_time']){
+        if($sign['user_id'] && $sign['create_time']){
             $this->HTTP_TOKEN_SIGN = $sign;
             $this->USER_ID = $sign['user_id'];
             return true;
@@ -137,10 +128,9 @@ class Base_Controller extends CI_Controller
         return $result;
     }
 
-    protected function set_token($open_id,$user_id)
+    protected function set_token($user_id)
     {
         $sign = array(
-            'open_id' => $open_id,
             'user_id' => $user_id,
             'create_time' => time()
         );
@@ -160,7 +150,8 @@ class API_Conotroller extends Base_Controller
     function __construct()
     {
         parent::__construct();
-        $this->init();
+        $this->USER_ID = 1;
+        //$this->init();
     }
 
     private function init()
