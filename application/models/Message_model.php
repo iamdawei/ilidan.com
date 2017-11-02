@@ -45,7 +45,7 @@ class Message_model extends CI_Model
         return $this->db->get()->result();
     }
 
-    public function get_top_n($limit = 10)
+    public function get_top_n($limit = 10,$order = 'count DESC')
     {
         $columns = 'message_id,company_name,company_city,message_content,message_datetime,message_status,count,surname';
         $start = 0;
@@ -54,7 +54,7 @@ class Message_model extends CI_Model
         $this->db->from('ili_message');
         $this->db->join('ili_user','ili_user.user_id = ili_message.user_id','left');
         $this->db->where('message_status=1');
-        $this->db->order_by('count DESC');
+        $this->db->order_by($order);
         $this->db->limit($limit, $start);
         return $this->db->get()->result();
     }

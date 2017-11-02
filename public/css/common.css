@@ -1,7 +1,7 @@
 ﻿html,body{
-    font-family:"Open Sans",arial,sans-serif;
+
 }
-/*强制不换行，必须与宽度联合使用*/
+
 .txt-line {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -11,6 +11,13 @@
 .txt-shadow{
     text-shadow:1px 1px 1px #E0E0E0;
 }
+.pd-left-0{
+    padding-left:0;
+}
+.mg-top-50{
+    margin-top:50px;
+}
+
 /* 弹出层样式（弹出框，确认框）  */
 .ilidan-dialog-shadow {
     filter: Alpha(opacity=60);
@@ -172,6 +179,40 @@
 /* 以上，为公共样式部分，接下来部分是各页面的样式 */
 
 /* 页面样式部分 */
+.warp-panel-tips{
+    padding-left:0;
+    padding-right:0;
+}
+
+.list {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.list-item{
+    background:#ffffff;
+    transform: translate(0,0);
+    transition:all .2s ease-in 0s;
+}
+.list-item:hover{
+    background:#eaf4f8;
+}
+
+.list-item {
+    margin-top: 20px;
+    padding:20px 10px 0;
+    border: 1px solid #eaf4f8;
+    text-align: center;
+}
+.list-item a{
+    display: block;
+    overflow:hidden;
+    font-size: 16px;
+    font-weight: bold;
+    height:42px;
+    margin-bottom: 15px;
+}
+
 .form-control.search-input {
     width: 100% !important;
     height: 28px !important;

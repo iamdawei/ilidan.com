@@ -16,7 +16,6 @@ class Home extends WEB_Conotroller
 
     public function index()
     {
-        $pageFile = '';
         $key = $this->input->get('kw');
 
         $limit = 12;
@@ -42,9 +41,9 @@ class Home extends WEB_Conotroller
         $main['total_page'] = ceil($total / $limit);
         $main['show_paginator'] = $show_paginator;
         $main['page_datas'] = $result;
-        $this->load->view('header',$pageFile);
+        $this->load->view('header');
         $this->load->view('home',$main);
-        $this->load->view('footer',$pageFile);
+        $this->load->view('footer');
     }
 
     public function message(){
@@ -68,84 +67,73 @@ class Home extends WEB_Conotroller
         $this->load->view('footer');
     }
 
-    public function login()
+    public function rank()
     {
-        if(REQUEST_METHOD !== REQUEST_POST) $this->ajax_return(400,MESSAGE_ERROR_REQUEST_TYPE);
-        $account = $this->input->post('username');
-        $password = $this->input->post('password');
-        $record = $this->input->post('record');
-        $type = $this->input->post('type');
+        $this->load->model('Message_model');
+        $result = $this->Message_model->get_top_n(12,'count DESC');
 
-        if (empty($account) || empty($password)) {
-            $this->ajax_return(400,MESSAGE_ERROR_PARAMETER);
-        }
+        $main['page_datas'] = $result;
+        $this->load->view('header');
+        $this->load->view('rank',$main);
+        $this->load->view('footer');
+    }
+
+    public function login(){
+        //login页面没有header 和 footer
+        $this->load->view('login');
+    }
+
+    public function session()
+    {
+        if(REQUEST_METHOD !== REQUEST_POST) show_404();
+        $account = $this->input->post('inputUser');
+        $password = $this->input->post('inputPassword');
         $password = md5($password . ENCRYPT_KEY);
-        switch ($type) {
-            case 't':
-                //教师
-                $this->_teacher_login($account,$password,$record);
-                break;
-            case 's' :
-                //学生
-                $this->_student_login($account,$password);
-                break;
-            case 'g' :
-                $this->_group_login($account,$password,$record);
-                break;
-            default:
-                $this->ajax_return(400,MESSAGE_ERROR_PARAMETER);
-                break;
+        $this->load->model('User_model');
+        $where['user_account'] = $account;
+        $where['user_password'] = $password;
+        $data = $this->User_model->get($where);
+        if ($data) {
+            $sign = $this->set_token($data['user_id']);
+            $time = 7*86400;
+            $this->load->helper('cookie');
+            set_cookie('token',$sign,$time);
+            $this->direct('/');
+        }else{
+            $data['login_message'] = MESSAGE_ERROR_ACCOUNT_PASSWORD;
+            $this->load->view('login',$data);
         }
     }
 
-    protected function _group_login($account,$password,$record)
-    {
-        $this->load->model('group_model');
-        $where['guser_account'] = $account;
-        $where['guser_password'] = $password;
-        $data = $this->group_model->get_info($where, 'guser_id,guser_name,group_id');
-        if ($data) {
-            $sign = $this->set_kkd_token($data['guser_id'],$data['group_id'], 'g');
-            $time = ($record)?(7*86400):0;
-            $this->load->helper('cookie');
-            set_cookie('token',$sign,$time);
-            $this->load->model('user_model');
-            $this->user_model->add_user_log($log=array('admin_id'=>$data['guser_id'],'log_type'=>0,'log_descript'=>'login','user_type'=>'g',
-                'log_full_sql'=>$this->db->last_query(),'user_ip'=>$_SERVER['REMOTE_ADDR'],'log_datetime'=>date('Y-m-d H:i:s')));
-            $this->ajax_return(200,MESSAGE_SUCCESS,$sign);
-        }else
-            $this->ajax_return(400,MESSAGE_ERROR_ACCOUNT_PASSWORD);
-    }
+    public function join(){
+        if(REQUEST_METHOD === REQUEST_GET){
+            $this->load->view('header');
+            $this->load->view('join');
+            $this->load->view('footer');
+        }
+        else if(REQUEST_METHOD === REQUEST_POST){
+            $this->load->model('User_model');
+            $account = trim($this->input->post('inputUser'));
+            $password = $this->input->post('inputPassword');
 
-    protected function _teacher_login($account,$password,$record)
-    {
-        $this->load->model('teacher_model');
-        $where['teacher_account'] = $account;
-        $where['teacher_password'] = $password;
-        $data = $this->teacher_model->get_teacher($where, 'teacher_id,teacher_name,teacher_photo,tea.school_id');
-        if ($data) {
-            $sign = $this->set_kkd_token($data['teacher_id'],$data['school_id'], 't');
-            $time = ($record)?(7*86400):0;
-            $this->load->helper('cookie');
-            set_cookie('token',$sign,$time);
-            $this->load->model('user_model');
-            $this->user_model->add_user_log($log=array('admin_id'=>$data['teacher_id'],'log_type'=>0,'log_descript'=>'login','user_type'=>'t',
-                'log_full_sql'=>$this->db->last_query(),'user_ip'=>$_SERVER['REMOTE_ADDR'],'log_datetime'=>date('Y-m-d H:i:s')),$data['school_id']);
-            $this->ajax_return(200,MESSAGE_SUCCESS,$sign);
-        }else
-            $this->ajax_return(400,MESSAGE_ERROR_ACCOUNT_PASSWORD);
-    }
+            if($account && $password){
+                if(strlen($account) > 20) $this->ajax_return(400,MESSAGE_ERROR_ACCOUNT_NONE);
+            }
+            else $this->ajax_return(400,MESSAGE_ERROR_PARAMETER);
 
-    protected function _student_login($account,$password)
-    {
-        $this->load->model('student_model');
-        $data = $this->student_model->match_student_info($account, $password);
-        if ($data) {
-            $sign = $this->set_kkd_token($data['student_id'],0, 's');
-
-            $this->ajax_return(200,MESSAGE_SUCCESS,$sign);
-        }else
-            $this->ajax_return(400,MESSAGE_ERROR_ACCOUNT_PASSWORD);
+            $password = md5($password . ENCRYPT_KEY);
+            $code = $this->input->post('inputCode');
+            if($code != REGISTER_CODE){
+                $this->ajax_return(400,MESSAGE_ERROR_CODE);
+            }else{
+                $insertData['user_account'] = $account;
+                $insertData['user_password'] = $password;
+                $re = $this->User_model->insert($insertData);
+                $this->ajax_return(200,MESSAGE_SUCCESS,$re);
+            }
+        }else{
+            show_404();
+        }
     }
 
     public function logout()

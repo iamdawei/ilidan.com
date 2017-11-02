@@ -8,6 +8,14 @@ class Comment_model extends CI_Model
         parent::__construct();
     }
 
+    public function get($where){
+        $cols = 'comment_id';
+        $this->db->select($cols);
+        $this->db->from('ili_comments');
+        $this->db->where($where);
+        return $this->db->get();
+    }
+
     public function get_all($message_id)
     {
         $cols = 'comment_id,user_surname,user_sex,comment_content';

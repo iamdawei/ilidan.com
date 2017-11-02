@@ -8,16 +8,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *   用户验证，token生成，ajax返回值
  */
 
-//闲置参数，暂时无用
-define('KKD_DOMAIN', 'http://simplebill.cn');
+define('ILIDAN_DOMAIN', '');
 
-define('KKD_UPLOAD_FILE','gif|jpg|png|doc|docx|ppt|pptx|xls|xlsx|mp3|mp4|rar|zip');
+define('ILIDAN_UPLOAD_FILE','gif|jpg|png|doc|docx|ppt|pptx|xls|xlsx|mp3|mp4|rar|zip');
 
 define('DEFAULT_AJAX_RETURN', 'JSON');
 define('DEFAULT_JSONP_HANDLER', 'jsonpReturn');
 define('VAR_JSONP_HANDLER', 'callback');
-define('ENCRYPT_KEY', 'KKD_SYSTEM');
+define('ENCRYPT_KEY', 'ILIDAN_SYSTEM');
 define('DEFAULT_PASSWORD', '000000');
+define('REGISTER_CODE', 1024);
 
 define('REQUEST_METHOD', strtoupper($_SERVER['REQUEST_METHOD']));
 define('REQUEST_GET', 'GET');
@@ -41,12 +41,16 @@ define('MESSAGE_ERROR_USER_ROLE', '该功能没有权限');
 //参数错误
 define('MESSAGE_ERROR_PARAMETER', '请求参数不正确');
 define('MESSAGE_ERROR_PARAMETER_CONFIRM', '确认密码不匹配');
+define('MESSAGE_ERROR_ACCOUNT_NONE', '账号不能为空');
 define('MESSAGE_ERROR_ACCOUNT_UNIQUE', '该账号已存在');
 define('MESSAGE_ERROR_ACCOUNT_PASSWORD', '账号或密码不正确');
+define('MESSAGE_ERROR_CODE', '注册码错误');
 define('MESSAGE_ERROR_NON_DATA', '数据不存在');
 define('MESSAGE_ERROR_REQUEST_TYPE', '请求方式不正确');
 define('MESSAGE_ERROR_CHANGE_PASSWORD', '您的初始密码不正确');
 define('MESSAGE_ERROR_DATA_WRITE', '数据更新错误');
+
+define('MESSAGE_ERROR_COMMENT_UNQIUE', '你已经留过言了');
 
 
 class Base_Controller extends CI_Controller

@@ -53,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container">
         <div class="navbar-header">
             <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">切换导航</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -62,12 +62,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="navbar-collapse collapse" role="navigation">
             <ul class="nav navbar-nav">
-                <li><a href="/" target="_blank">天字号地牢</a></li>
+                <li><a href="/rank" target="_blank">天字号地牢</a></li>
                 <li><input type="text" class="form-control search-input" placeholder="搜公司名" autocomplete="off" id="searchCompany"></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/about/">登录</a></li>
-                <li><a href="/about/">注册</a></li>
+                <li><a href="/login">登录</a></li>
+                <li><a href="/join">注册</a></li>
             </ul>
         </div>
     </div>

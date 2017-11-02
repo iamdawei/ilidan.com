@@ -39,6 +39,13 @@ class Message extends API_Conotroller
     }
 
     private  function comment_add($message_id){
+        //用户只能留言一条
+        $this->load->model('Comment_model');
+        $whereMessage['message_id'] = $message_id;
+        $whereMessage['user_id'] = $this->USER_ID;
+        $res = $this->Comment_model->get($whereMessage);
+        if($res) $this->ajax_return(400, MESSAGE_ERROR_COMMENT_UNQIUE);
+
         $this->load->model('User_model');
         $where['user_id'] = $this->USER_ID;
         $resU = $this->User_model->get($where);
@@ -52,7 +59,6 @@ class Message extends API_Conotroller
         $data['comment_content'] = $this->input->input_stream('comment_content');
         $data['comment_datetime'] = date('Y-m-d H:i:s');
 
-        $this->load->model('Comment_model');
         $res = $this->Comment_model->add($data);
 
         $responseData['user_surname'] = $resU['surname'];

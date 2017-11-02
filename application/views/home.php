@@ -22,7 +22,7 @@
     .title-h1 {
         font-size: 32px;
         line-height: 60px;
-        font-weight: 800;
+        font-weight: 600;
         text-transform: uppercase;
         padding-bottom: 60px;
     }
@@ -35,35 +35,6 @@
         font-size: 18px;
         border-radius: 0;
         border-color:#1b9af7;
-    }
-
-    .list {
-        margin-top: 50px;
-        margin-bottom: 50px;
-    }
-
-    .list-item{
-        background:#ffffff;
-        transform: translate(0,0);
-        transition:all .2s ease-in 0s;
-    }
-    .list-item:hover{
-        background:#eaf4f8;
-    }
-
-    .list-item {
-        margin-top: 20px;
-        padding:20px 10px 0;
-        border: 1px solid #eaf4f8;
-        text-align: center;
-    }
-    .list-item a{
-        display: block;
-        overflow:hidden;
-        font-size: 16px;
-        font-weight: bold;
-        height:42px;
-        margin-bottom: 15px;
     }
 </style>
 <div class="huge">
@@ -81,9 +52,8 @@
         </div>
     </div>
 </div>
-
-<div class="container list">
-    <h3 class="text-center"><strong><?php echo $title;?></strong></h3>
+<h3 class="text-center txt-shadow mg-top-50"><?php echo $title;?></h3>
+<div class="container list mg-top-50">
     <div class="row"><?php
         foreach($page_datas as $data){
 echo  '<div class="col-sm-4 col-xs-12">
