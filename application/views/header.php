@@ -32,6 +32,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
     </div>
 </noscript>
+<script type="text/javascript">
+    var ilidanUid = <?php if(isset($_SESSION['sex']) && isset($_SESSION['surname'])) {echo 'true';}else{echo 'false';}?>;
+</script>
 <body>
 <!--[if lt IE 9]>
 <style>
@@ -66,8 +69,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <li><input type="text" class="form-control search-input" placeholder="搜公司名" autocomplete="off" id="searchCompany"></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/login">登录</a></li>
-                <li><a href="/join">注册</a></li>
+                <?php if(isset($_SESSION['sex']) && isset($_SESSION['surname'])) {
+                echo '<li><a href="/profile">'.(($_SESSION['sex'])?'Mr':'Mrs').' .'.$_SESSION['surname'].'</a></li><li><a href="/logout">退出</a></li>';
+                }else{
+                    echo '<li><a href="/login">登录</li><li><a href="/join">注册</a></li>';
+                }
+                ?>
             </ul>
         </div>
     </div>

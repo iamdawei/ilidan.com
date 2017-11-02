@@ -12,7 +12,6 @@
     <link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.min.css" rel="stylesheet"/>
 
     <link href="/css/common.css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="/js/jquery.gritter/css/jquery.gritter.css"/>
     <!--[if lt IE 9]>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -99,7 +98,7 @@
 <![endif]-->
 <div class="text-center"><a class="logo" href="/"><strong>iLiDan</strong></a></div>
 <div class="container">
-    <form class="form-signin" method="post" action="/session">
+    <form class="form-signin" method="post" action="/login">
         <h3 class="form-signin-heading">登 录 iLiDan</h3>
         <?php if(isset($login_message))
         echo '<div class="alert alert-danger alert-dismissible" role="alert" id="alert-danger">
@@ -108,16 +107,13 @@
         </div>'
         ?>
         <label for="inputUser" class="sr-only">账 号</label>
-        <input type="text" id="inputUser" class="form-control" placeholder="账 号" required autofocus>
+        <input type="text" id="inputUser" name="inputUser" class="form-control" placeholder="账 号" required autofocus>
         <label for="inputPassword" class="sr-only">密 码</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="密 码" required>
-        <button class="button button-rounded btn-block button-primary button-rounded" type="submit">登 录</button>
+        <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="密 码" required>
+        <button class="button button-rounded btn-block button-primary button-rounded" type="submit" id="sendBtn">登 录</button>
         <p class="help-block"><br />登录后的一段时间内，你不需要再次登录，除非主动退出或清除cookie</p>
     </form>
 </div>
-<script type="text/template">
-
-</script>
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -125,7 +121,17 @@
 <script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 <script type="text/javascript" src="/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript">
+    var isSubmit = false;
+    $(function(){
+        $("form").submit(function(){
+            if(isSubmit == false){
+                isSubmit = true;
+                return true;
+            }else{
+                return false;
+            }
+        });
+    });
 </script>
 </html>

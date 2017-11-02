@@ -13,7 +13,7 @@ class Comment_model extends CI_Model
         $this->db->select($cols);
         $this->db->from('ili_comments');
         $this->db->where($where);
-        return $this->db->get();
+        return $this->db->get()->result();
     }
 
     public function get_all($message_id)

@@ -79,29 +79,27 @@ class Home extends WEB_Conotroller
     }
 
     public function login(){
-        //login页面没有header 和 footer
-        $this->load->view('login');
-    }
-
-    public function session()
-    {
-        if(REQUEST_METHOD !== REQUEST_POST) show_404();
-        $account = $this->input->post('inputUser');
-        $password = $this->input->post('inputPassword');
-        $password = md5($password . ENCRYPT_KEY);
-        $this->load->model('User_model');
-        $where['user_account'] = $account;
-        $where['user_password'] = $password;
-        $data = $this->User_model->get($where);
-        if ($data) {
-            $sign = $this->set_token($data['user_id']);
-            $time = 7*86400;
-            $this->load->helper('cookie');
-            set_cookie('token',$sign,$time);
-            $this->direct('/');
-        }else{
-            $data['login_message'] = MESSAGE_ERROR_ACCOUNT_PASSWORD;
-            $this->load->view('login',$data);
+        if(REQUEST_METHOD === REQUEST_GET) $this->load->view('login');
+        else{
+            echo $this->input->post('_fid');
+            if($this->input->post('_fid')) $this->direct('/login');
+            $account = trim($this->input->post('inputUser'));
+            $password = $this->input->post('inputPassword');
+            $password = md5($password . ENCRYPT_KEY);
+            $this->load->model('User_model');
+            $where['user_account'] = $account;
+            $where['user_password'] = $password;
+            $data = $this->User_model->get($where);
+            if ($data) {
+                $sign = $this->set_token($data['user_id']);
+                $time = 7*86400;
+                $this->load->helper('cookie');
+                set_cookie('token',$sign,$time);
+                $this->direct('/');
+            }else{
+                $data['login_message'] = MESSAGE_ERROR_ACCOUNT_PASSWORD;
+                $this->load->view('login',$data);
+            }
         }
     }
 
@@ -115,8 +113,9 @@ class Home extends WEB_Conotroller
             $this->load->model('User_model');
             $account = trim($this->input->post('inputUser'));
             $password = $this->input->post('inputPassword');
-
-            if($account && $password){
+            $surname = $this->input->post('inputSurname');
+            $sex = $this->input->post('inputSex');
+            if($account && $password && $surname){
                 if(strlen($account) > 20) $this->ajax_return(400,MESSAGE_ERROR_ACCOUNT_NONE);
             }
             else $this->ajax_return(400,MESSAGE_ERROR_PARAMETER);
@@ -126,8 +125,15 @@ class Home extends WEB_Conotroller
             if($code != REGISTER_CODE){
                 $this->ajax_return(400,MESSAGE_ERROR_CODE);
             }else{
+                $whereUnique['user_account'] = $account;
+                $re = $this->User_model->get($whereUnique);
+                if($re) $this->ajax_return(400,MESSAGE_ERROR_ACCOUNT_UNIQUE);
+
                 $insertData['user_account'] = $account;
                 $insertData['user_password'] = $password;
+                $insertData['surname'] = $surname;
+                $insertData['sex'] = $sex;
+
                 $re = $this->User_model->insert($insertData);
                 $this->ajax_return(200,MESSAGE_SUCCESS,$re);
             }
@@ -139,15 +145,11 @@ class Home extends WEB_Conotroller
     public function logout()
     {
         session_start();
-        unset($_SESSION['user_id']);
-        unset($_SESSION['user_name']);
-        unset($_SESSION['user_photo']);
-        unset($_SESSION['user_type']);
-        unset($_SESSION['group_model']);
-        unset($_SESSION['school_id']);
+        unset($_SESSION['surname']);
+        unset($_SESSION['sex']);
         session_destroy();
         $this->load->helper('cookie');
         set_cookie('token',0,-1);
-        $this->direct('/login.html');
+        $this->direct('/');
     }
 }

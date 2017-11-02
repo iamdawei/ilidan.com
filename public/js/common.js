@@ -3,6 +3,7 @@ $.ajaxSetup({
         'TOKEN': $.cookie('token')
     },
     dataType:'json',
+    beforeSend:ilidan_ajax_beforeSend,
     error:ilidan_ajax_error,
     complete:ilidan_ajax_complete
 });
@@ -158,27 +159,18 @@ function paginator_init(total_page,current_page)
  time: 3000 // hang on the screen for...
  });
  */
-window.alert=function(txt){
-    $.extend($.gritter.options, {
-        position: 'bottom-right',
-        fade_in_speed: 1000,
-        fade_out_speed: 1000,
-        time: 3000
-    });
-    $.gritter.add({
-        title: 'iLiDan 提示',
-        text: txt,
-        class_name: 'my-gritter-class'
-    });
-};
-//调用案例：confirm('你确定要修改密码',function(){alert('OK');},function(){alert('cancel');});
-window.confirm=function(txt,ok,cancel){
-    var top = document.body.scrollTop||document.documentElement.scrollTop;
-    var temp_obj = '<div class="ilidan-dialog-shadow"></div><div class="ilidan-dialog-wrap" style="top:'+(top+120)+'px;"><div class="ilidan-dialog-container" style="min-width: 420px;width:420px;"><span class="ilidan-confirm-icon"></span><div class="ilidan-confirm-header"><a class="ilidan-dialog-close" href="javascript:ilidan_dialog_close();"></a></div><div class="ilidan-confirm-content"><p class="txt">[dialog-content]</p></div>'+
-        '<div class="ilidan-confirm-btns"><button class="btn btn-primary md" style="margin-right:20px;" type="button">确 定</button><button class="btn btn-cancel md" type="button">取 消</button></div></div></div>';
-    temp_obj = temp_obj.replace('[dialog-content]',txt);
-    $('body').append(temp_obj);
-    $(".ilidan-confirm-btns>.btn").on('click',ilidan_dialog_close);
-    $(".ilidan-confirm-btns>.btn-primary").on('click',ok);
-    $(".ilidan-confirm-btns>.btn-cancel").on('click',cancel);
-};
+if(typeof($.gritter) === 'object'){
+    window.alert=function(txt){
+        $.extend($.gritter.options, {
+            position: 'bottom-right',
+            fade_in_speed: 1000,
+            fade_out_speed: 1000,
+            time: 3000
+        });
+        $.gritter.add({
+            title: 'iLiDan 提示',
+            text: txt,
+            class_name: 'my-gritter-class'
+        });
+    };
+}

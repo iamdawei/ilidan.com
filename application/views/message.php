@@ -91,7 +91,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     var comment_uri = '/message/<?php echo $message_id;?>/comment';
     function page_init(){
         $("#sendBtn").on('click',function(){
-            //alert('你还没有登录');
+            if(!ilidanUid) return alert('你还没有登录');
             var messageValue = $.trim($("#messageInput").val());
             if(messageValue.length > 0 && messageValue.length < 21){
 
@@ -100,7 +100,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     url: comment_uri,
                     type:'post',
                     data:'comment_content=' + messageValue,
-                    beforeSend:ilidan_ajax_beforeSend,
                     success:function(data){
                         if(data.code == 200) {
                             var surname = data.result.user_surname;

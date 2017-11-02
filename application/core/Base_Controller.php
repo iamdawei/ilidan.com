@@ -154,8 +154,7 @@ class API_Conotroller extends Base_Controller
     function __construct()
     {
         parent::__construct();
-        $this->USER_ID = 1;
-        //$this->init();
+        $this->init();
     }
 
     private function init()
@@ -171,7 +170,7 @@ class API_Conotroller extends Base_Controller
         else
             $this->ajax_return(300,MESSAGE_ERROR_WARNING_AUTH);
 
-        if(!isset($this->HTTP_TOKEN) &&empty($this->HTTP_TOKEN)) $this->ajax_return(300,MESSAGE_ERROR_WARNING_TOKEN);
+        if(!isset($this->HTTP_TOKEN) && mpty($this->HTTP_TOKEN)) $this->ajax_return(300,MESSAGE_ERROR_WARNING_TOKEN);
 
         $sign = $this->valid_kkd_token($this->HTTP_TOKEN);
         if($sign === false) $this->ajax_return(300,MESSAGE_ERROR_WARNING_TOKEN);
@@ -194,5 +193,26 @@ class WEB_Conotroller extends Base_Controller
     private function init()
     {
         session_start();
+
+        $router = & load_class('Router', 'core');
+        $controller = strtolower($router->fetch_class());
+        $method = strtolower($router->fetch_method());
+
+        $this->load->helper('cookie');
+        $this->HTTP_TOKEN = get_cookie('token');
+        if($this->HTTP_TOKEN){
+            $sign = $this->valid_kkd_token($this->HTTP_TOKEN);
+            if($sign === false) $this->direct('/login');
+
+            $this->load->model('User_model');
+            $where['user_id'] = $this->USER_ID;;
+            $re = $this->User_model->get($where);
+            if(!$re) $this->direct('/login');
+            else{
+                $_SESSION['surname'] = $re['surname'];
+                $_SESSION['sex'] = $re['sex'];
+            }
+        }
+
     }
 }
