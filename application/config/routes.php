@@ -12,6 +12,13 @@ $route['login'] = 'Home/login';
 $route['join'] = 'Home/join';
 
 $route['search'] = 'Home/index';
-$route['message/:num'] = 'home/message';
-$route['message/:num/comment'] = 'message/comment';
+$route['message/:num'] = 'Home/message';
+$route['message/:num/comment'] = 'Message/comment';
+
 $route['rank'] = 'Home/rank';
+
+$route['add']['get'] = 'Home/add';
+$route['add']['post'] = 'Message/index';
+
+$route['profile'] = 'Home/profile';
+$route['profile/:num'] = 'User/index';

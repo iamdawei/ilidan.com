@@ -53,7 +53,7 @@
         <div class="col-sm-12 col-md-8">
             <h4 class="txt-shadow"><strong>创建你的个人账户</strong></h4>
             <div class="row">
-                <form method="post" action="/join" autocomplete="off" class="col-sm-12 col-md-8" id="joinForm">
+                <form method="post" action="/User" autocomplete="off" class="col-sm-12 col-md-8" id="joinForm">
                     <?php if(isset($error_message))
                         echo '<div class="alert alert-danger alert-dismissible" role="alert" id="alert-danger">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -88,7 +88,7 @@
                         </select>
                         <p class="help-block">你的性别会伴随姓氏展示在页面上。</p>
                     </div>
-                    <p class="help-block tip">当你按下「创建账户」按钮时，则表示你同意并坚决执行 iLiDan 守则( 是什么，我也还不知道 )。</p>
+                    <p class="help-block tip">当你按下「创建账户」按钮时，则表示你同意并坚决执行 iLiDan 守则( 是什么？我也还不知道 )。</p>
                     <button type="submit" data-lock="true" data-unlock-txt="创建账户" data-lock-txt="创建中..." id="sendBtn" class="button button-primary button-rounded">创建账户</button>
                 </form>
             </div>
@@ -127,7 +127,7 @@
     }
     function ajax_submit(){
         if(submit_lock) return false;
-        var comment_uri = '/join';
+        var comment_uri = '/User';
         ILIDAN_AJAX_OBJ = $("#sendBtn");
         $.ajax({
             url: comment_uri,
@@ -135,7 +135,9 @@
             data:$('#joinForm').serialize(),
             success:function(data){
                 if(data.code == 200) {
-                    alert('OK');
+                    alert('注册成功，即将跳转到登陆。');
+                    setTimeout(function(){window.location.href = '/login';},2000);
+
                 }
                 else alert(data.info);
             }

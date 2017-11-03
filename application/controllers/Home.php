@@ -152,4 +152,18 @@ class Home extends WEB_Conotroller
         set_cookie('token',0,-1);
         $this->direct('/');
     }
+
+    public function add(){
+        $OT['FOOTER_JAVASCRIPT'] = '<script type="text/javascript" src="/js/area.js"></script>';
+        $this->load->view('header');
+        $this->load->view('add');
+        $this->load->view('footer',$OT);
+    }
+
+    public function profile(){
+        $data['profile'] = $this->userInfo;
+        $this->load->view('header');
+        $this->load->view('profile',$data);
+        $this->load->view('footer');
+    }
 }

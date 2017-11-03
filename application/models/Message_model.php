@@ -61,15 +61,23 @@ class Message_model extends CI_Model
 
     public function delete($topic_id)
     {
-        $this->db->where('topic_id', $topic_id);
-        $this->db->delete('tt_topic');
+        $this->db->where('message_id', $topic_id);
+        $this->db->delete('ili_message');
         return $this->db->affected_rows();
     }
 
-    public  function add($topic_array)
+    public function add($data)
     {
-        $this->db->insert('tt_topic', $topic_array);
+        $this->db->insert('ili_message', $data);
         return $this->db->insert_id();
+    }
+
+    public function add_unique($company_name){
+        $this->db->select('message_id');
+        $this->db->from('ili_message');
+        $this->db->where($company_name);
+        $res = $this->db->get()->row();
+        return $res;
     }
 
     public function put_up($message_id,$set)
@@ -77,33 +85,6 @@ class Message_model extends CI_Model
         $this->db->where('message_id',$message_id);
         $this->db->set('count',$set,FALSE);
         $this->db->update('ili_message');
-        return $this->db->affected_rows();
-    }
-
-    public function get_topic_up($topic_id,$user_id)
-    {
-        $where['topic_id'] = $topic_id;
-        $where['user_id'] = $user_id;
-        $this->db->select('topic_id,user_id');
-        $this->db->from('tt_topic_up');
-        $this->db->where($where);
-        return $this->db->get()->row();
-    }
-
-    public function add_topic_up($topic_id,$user_id)
-    {
-        $data['topic_id'] = $topic_id;
-        $data['user_id'] = $user_id;
-        $this->db->insert('tt_topic_up', $data);
-        return $this->db->insert_id();
-    }
-
-    public function delete_topic_up($topic_id,$user_id)
-    {
-        $where['topic_id'] = $topic_id;
-        $where['user_id'] = $user_id;
-        $this->db->where($where);
-        $this->db->delete('tt_topic_up');
         return $this->db->affected_rows();
     }
 }

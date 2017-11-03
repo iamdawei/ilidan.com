@@ -25,7 +25,7 @@ class User_model extends CI_model{
     }
     public function get($where)
     {
-        $cols = 'user_id,surname,name,industry,post,phone,sex';
+        $cols = 'user_id,user_account,surname,name,industry,post,phone,sex';
         $this->db->select($cols);
         $this->db->from('ili_user');
         $this->db->where($where);

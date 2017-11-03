@@ -66,11 +66,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="navbar-collapse collapse" role="navigation">
             <ul class="nav navbar-nav">
                 <li><a href="/rank" target="_blank">天字号地牢</a></li>
+                <li><a href="/add" target="_blank">我要爆料</a></li>
                 <li><input type="text" class="form-control search-input" placeholder="搜公司名" autocomplete="off" id="searchCompany"></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if(isset($_SESSION['sex']) && isset($_SESSION['surname'])) {
-                echo '<li><a href="/profile">'.(($_SESSION['sex'])?'Mr':'Mrs').' .'.$_SESSION['surname'].'</a></li><li><a href="/logout">退出</a></li>';
+                echo '<li><a href="/profile">'.(($_SESSION['sex'])?'Mrs':'Mr').' .'.$_SESSION['surname'].'</a></li><li><a href="/logout">退出</a></li>';
                 }else{
                     echo '<li><a href="/login">登录</li><li><a href="/join">注册</a></li>';
                 }

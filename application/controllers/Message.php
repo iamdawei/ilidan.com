@@ -15,7 +15,46 @@ class Message extends API_Conotroller
 
     public function index()
     {
+        switch (REQUEST_METHOD) {
+            case REQUEST_GET :
+                $this->ajax_return(400, MESSAGE_ERROR_REQUEST_TYPE);
+                break;
+            case REQUEST_DELETE :
+                $this->ajax_return(400, MESSAGE_ERROR_REQUEST_TYPE);
+                break;
+            case REQUEST_PUT :
+                $this->ajax_return(400, MESSAGE_ERROR_REQUEST_TYPE);
+                break;
+            case REQUEST_POST :
+                $this->message_add();
+                break;
+        }
+    }
 
+    public function message_add(){
+        $data=[];
+        $data['company_name'] = $this->input->post('company_name');
+
+        //不能重复公司名
+        $this->load->model('Message_model');
+        $res = $this->Message_model->add_unique($data);
+        if($res){
+            $this->ajax_return(300, MESSAGE_ERROR_COMPANY_UNIQUE);
+        }
+
+        $data['user_id'] = $this->USER_ID;
+        $data['company_city'] = $this->input->post('company_city');
+        $data['message_content'] = $this->input->post('message_content');
+        $data['message_status'] = 1;
+        $data['message_datetime'] = date('Y-m-d H:i:s');
+
+        $res = $this->Message_model->add($data);
+        if($res){
+            $this->ajax_return(200, MESSAGE_SUCCESS);
+        }
+        else{
+            $this->ajax_return(400, MESSAGE_ERROR_DATA_WRITE,$this->Message_model->last_sql());
+        }
     }
 
     public function comment()
@@ -56,7 +95,7 @@ class Message extends API_Conotroller
         $data['user_id'] = $this->USER_ID;
         $data['user_surname'] = $resU['surname'];
         $data['user_sex'] = $resU['sex'];
-        $data['comment_content'] = $this->input->input_stream('comment_content');
+        $data['comment_content'] = $this->input->post('comment_content');
         $data['comment_datetime'] = date('Y-m-d H:i:s');
 
         $res = $this->Comment_model->add($data);

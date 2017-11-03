@@ -43,6 +43,7 @@ define('MESSAGE_ERROR_PARAMETER', '请求参数不正确');
 define('MESSAGE_ERROR_PARAMETER_CONFIRM', '确认密码不匹配');
 define('MESSAGE_ERROR_ACCOUNT_NONE', '账号不能为空');
 define('MESSAGE_ERROR_ACCOUNT_UNIQUE', '该账号已存在');
+define('MESSAGE_ERROR_COMPANY_UNIQUE', '该公司已收录');
 define('MESSAGE_ERROR_ACCOUNT_PASSWORD', '账号或密码不正确');
 define('MESSAGE_ERROR_CODE', '注册码错误');
 define('MESSAGE_ERROR_NON_DATA', '数据不存在');
@@ -163,7 +164,7 @@ class API_Conotroller extends Base_Controller
         $controller = strtolower($router->fetch_class());
         $method = strtolower($router->fetch_method());
         //跳过请求openid的验证
-        if($method == 'openid') return true;
+        if($controller == 'user' && REQUEST_METHOD == REQUEST_POST) return true;
 
         if(isset($_SERVER['HTTP_TOKEN']))
             $this->HTTP_TOKEN = $_SERVER['HTTP_TOKEN'];
@@ -184,6 +185,7 @@ class API_Conotroller extends Base_Controller
  * */
 class WEB_Conotroller extends Base_Controller
 {
+    protected $userInfo = [];
     function __construct()
     {
         parent::__construct();
@@ -200,17 +202,28 @@ class WEB_Conotroller extends Base_Controller
 
         $this->load->helper('cookie');
         $this->HTTP_TOKEN = get_cookie('token');
+
         if($this->HTTP_TOKEN){
             $sign = $this->valid_kkd_token($this->HTTP_TOKEN);
             if($sign === false) $this->direct('/login');
 
             $this->load->model('User_model');
-            $where['user_id'] = $this->USER_ID;;
-            $re = $this->User_model->get($where);
-            if(!$re) $this->direct('/login');
+            $where['user_id'] = $this->USER_ID;
+            $this->userInfo = $this->User_model->get($where);
+            if(!$this->userInfo) $this->direct('/login');
             else{
-                $_SESSION['surname'] = $re['surname'];
-                $_SESSION['sex'] = $re['sex'];
+                $_SESSION['surname'] = $this->userInfo['surname'];
+                $_SESSION['sex'] = $this->userInfo['sex'];
+            }
+        }
+
+        //如果用户是发布和查看个人信息，则需要判断是否登录
+        if($method == 'add' || $method == 'profile'){
+            if(isset($_SESSION['surname']) && isset($_SESSION['sex']) && $this->USER_ID){
+                return true;
+            }else
+            {
+                $this->direct('/login');
             }
         }
 

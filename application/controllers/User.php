@@ -30,38 +30,47 @@ class User extends API_Conotroller
     }
 
     private function insert(){
-        //无用功能
-//        $openID = $this->input->post('openid');
-//        $where['wechat_openid'] = $openID;
-//        $re = $this->User_model->get($where);
-//        if(!$re){
-//            $data = array(
-//                'user_name' =>  $this->input->post('user_name'),
-//                'user_image' =>  $this->input->post('user_image'),
-//                'wechat_openid' => $this->input->post('openid'),
-//            );
-//            $new_id = $this->User_model->add($data);
-//            if (! $new_id)
-//            {
-//                $this->ajax_return(400,MESSAGE_ERROR_DATA_WRITE);
-//            }
-//            $token = $this->set_token($openID,$new_id);
-//            $this->ajax_return(200,MESSAGE_SUCCESS,$token);
-//        }
+        $this->load->model('User_model');
+        $account = trim($this->input->post('inputUser'));
+        $password = $this->input->post('inputPassword');
+        $surname = $this->input->post('inputSurname');
+        $sex = $this->input->post('inputSex');
+        if($account && $password && $surname){
+            if(strlen($account) > 20) $this->ajax_return(400,MESSAGE_ERROR_ACCOUNT_NONE);
+        }
+        else $this->ajax_return(400,MESSAGE_ERROR_PARAMETER);
+
+        $password = md5($password . ENCRYPT_KEY);
+        $code = $this->input->post('inputCode');
+        if($code != REGISTER_CODE){
+            $this->ajax_return(400,MESSAGE_ERROR_CODE);
+        }else {
+            $whereUnique['user_account'] = $account;
+            $re = $this->User_model->get($whereUnique);
+            if ($re) $this->ajax_return(400, MESSAGE_ERROR_ACCOUNT_UNIQUE);
+
+            $insertData['user_account'] = $account;
+            $insertData['user_password'] = $password;
+            $insertData['surname'] = $surname;
+            $insertData['sex'] = $sex;
+
+            $re = $this->User_model->insert($insertData);
+            $this->ajax_return(200, MESSAGE_SUCCESS, $re);
+        }
     }
 
     private function update(){
         $user_id = $this->uri->segment(2, 0);
+        if($user_id != $this->USER_ID) $this->ajax_return(400,MESSAGE_ERROR_WARNING_AUTH);
+
         $data = array(
-            'user_name' =>  $this->input->input_stream('nickName'),
-            'user_image' =>  $this->input->input_stream('avatarUrl'),
-            'gender' => $this->input->input_stream('gender'),
-            'province' =>  $this->input->input_stream('province'),
-            'city' =>  $this->input->input_stream('city'),
-            'country' => $this->input->input_stream('country'),
+            'name' =>  $this->input->input_stream('name'),
+            'industry' =>  $this->input->input_stream('industry'),
+            'post' => $this->input->input_stream('post'),
+            'phone' =>  $this->input->input_stream('phone')
         );
         $re = $this->User_model->update($user_id,$data);
-        if (! $re) {
+        if ($re === false) {
             $this->ajax_return(400,MESSAGE_ERROR_DATA_WRITE);
         }else
             $this->ajax_return(200,MESSAGE_SUCCESS);
