@@ -23,9 +23,9 @@ class User_model extends CI_model{
         $this->db->update('ili_user',$data);
         return $this->db->affected_rows();
     }
-    public function get($where)
+    public function get($where,$cols='')
     {
-        $cols = 'user_id,user_account,surname,name,industry,post,phone,sex';
+        if(!$cols) $cols = 'user_id,user_account,surname,name,industry,post,phone,sex';
         $this->db->select($cols);
         $this->db->from('ili_user');
         $this->db->where($where);

@@ -48,7 +48,7 @@ define('MESSAGE_ERROR_ACCOUNT_PASSWORD', '账号或密码不正确');
 define('MESSAGE_ERROR_CODE', '注册码错误');
 define('MESSAGE_ERROR_NON_DATA', '数据不存在');
 define('MESSAGE_ERROR_REQUEST_TYPE', '请求方式不正确');
-define('MESSAGE_ERROR_CHANGE_PASSWORD', '您的初始密码不正确');
+define('MESSAGE_ERROR_CHANGE_PASSWORD', '原始密码不正确');
 define('MESSAGE_ERROR_DATA_WRITE', '数据更新错误');
 
 define('MESSAGE_ERROR_COMMENT_UNQIUE', '你已经留过言了');
@@ -163,8 +163,8 @@ class API_Conotroller extends Base_Controller
         $router = & load_class('Router', 'core');
         $controller = strtolower($router->fetch_class());
         $method = strtolower($router->fetch_method());
-        //跳过请求openid的验证
-        if($controller == 'user' && REQUEST_METHOD == REQUEST_POST) return true;
+
+        if($controller == 'user' && $method == 'index' && REQUEST_METHOD == REQUEST_POST) return true;
 
         if(isset($_SERVER['HTTP_TOKEN']))
             $this->HTTP_TOKEN = $_SERVER['HTTP_TOKEN'];

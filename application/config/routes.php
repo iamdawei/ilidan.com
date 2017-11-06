@@ -21,4 +21,5 @@ $route['add']['get'] = 'Home/add';
 $route['add']['post'] = 'Message/index';
 
 $route['profile'] = 'Home/profile';
-$route['profile/:num'] = 'User/index';
+$route['setting/info'] = 'User/index';
+$route['setting/password'] = 'User/password';

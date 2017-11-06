@@ -34,15 +34,16 @@
         margin-top:15px;
         color:#333;
     }
+
 </style>
 <div class="container">
     <h3 class="txt-shadow mg-top-120">欢迎来到 iLiDan</h3>
     <h4 class="text-muted">生活总是坎坷，能少一个是一个。</h4>
     <div class="row main mg-top-50">
         <div class="col-sm-12 col-md-8">
-            <h4 class="txt-shadow"><strong>创建你的个人账户</strong></h4>
+            <h4 class="txt-shadow"><strong>修改你的个人信息</strong></h4>
             <div class="row">
-                <form method="post" action="/profile" autocomplete="off" class="col-sm-12 col-md-8" id="userForm">
+                <form method="post" action="/setting/info" autocomplete="off" class="col-sm-12 col-md-8" id="userForm">
                     <?php if(isset($error_message))
                         echo '<div class="alert alert-danger alert-dismissible" role="alert" id="alert-danger">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -65,8 +66,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" for="inputName">名 字</label>
-                        <input type="text" class="form-control" value="<?php echo $profile['name']; ?>" id="inputName">
+                        <label class="control-label" for="name">名 字</label>
+                        <input type="text" class="form-control" value="<?php echo $profile['name']; ?>" name="name" id="name">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="industry">行 业</label>
@@ -84,6 +85,25 @@
                     <button type="submit" data-lock="true" data-unlock-txt="保存账户" data-lock-txt="保存中..." id="sendBtn" class="button button-primary button-rounded">保存账户</button>
                 </form>
             </div>
+            <p class="mg-top-50"></p>
+            <h4 class="txt-shadow pass-title"><strong>修改密码</strong></h4>
+            <div class="row">
+                <form method="post" action="/setting/password" autocomplete="off" class="col-sm-12 col-md-8 pass-form" id="passForm">
+                    <div class="form-group">
+                        <label class="control-label" for="oldPassword">原来的密码</label>
+                        <input type="password" value="" class="form-control" name="oldPassword" id="oldPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="newPassword">新的密码</label>
+                        <input type="password" value="" class="form-control" name="newPassword" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="cNewPassword">确认新密码</label>
+                        <input type="password" value="" class="form-control" name="cNewPassword" id="cNewPassword" required>
+                    </div>
+                    <button type="button" data-lock="true" data-unlock-txt="修改密码" data-lock-txt="修改密码..." id="passwordBtn" class="button button-primary button-rounded">修改密码</button>
+                </form>
+            </div>
         </div>
         <div class="col-md-4 hidden-xs hidden-sm">
             <div class="panel panel-info">
@@ -98,17 +118,48 @@
     </div>
 </div>
 <script type="text/javascript">
-    var submit_lock = true;
-
+    var pass_lock = false;
+    var comment_uri = '/setting/';
     function page_init(){
         $("#userForm").submit(function(){
             ajax_submit();
             return false;
         });
+        $("#passwordBtn").on('click',function(){
+            var btnThat = $(this);
+            var op = $("#oldPassword").val();
+            var np = $("#newPassword").val();
+            var cnp = $("#cNewPassword").val();
+            if(op == np) return alert('新旧密码不能相同');
+            if(np != cnp) return alert('确认密码不一致');
+            comment_uri = $('#passForm').attr('action');
+            $.ajax({
+                url: comment_uri,
+                type:'post',
+                data:$('#passForm').serialize(),
+                success:function(data){
+                    if(data.code == 200) {
+                        alert('你的密码已变更');
+                    }
+                    else alert(data.info);
+                },
+                beforeSend:function(){
+                    if(pass_lock === true){
+                        btnThat.text('修改密码...');
+                        return false;
+                    }
+                    else pass_lock = true;
+                },
+                complete:function(){
+                    btnThat.text('修改密码');
+                    pass_lock = false;
+                }
+            });
+        });
     }
     function ajax_submit(){
-        var comment_uri = '/profile/<?php echo $profile['user_id']; ?>';
         ILIDAN_AJAX_OBJ = $("#sendBtn");
+        comment_uri = $('#userForm').attr('action');
         $.ajax({
             url: comment_uri,
             type:'put',

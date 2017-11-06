@@ -47,18 +47,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="col-sm-12 col-md-8 pd-left-0">
         <h3 class="txt-shadow"><?php echo $message_info->company_name;?></h3>
         <h4><?php echo "$message_info->company_city , $message_info->surname";?> , <?php echo date('Y.m.d',strtotime($message_info->message_datetime));?></h4>
-        <p class="text-muted mg-top-50">请不要说诸如「很坑」「垃圾」之类没有切实意义的词句。<br />在每则信息下，暂时每个用户只有一次留言的机会。<br />
-            请简明精要（20字内）的阐述你在这家公司碰到的坑。如下述：</p>
-        <ul>
-            <li>面试官技术水平很差</li>
-            <li>公司不给社保</li>
-            <li>工资喜欢拖欠</li>
-        </ul>
-        <div class="input-group mg-top-50">
+        <div><?php echo nl2br($message_info->message_content);?></div>
+        <div class="col-md-8 input-group mg-top-50">
             <input type="text" class="form-control" placeholder="巧啊，你也被这家公司支配过。" id="messageInput" maxlength="20" />
             <span class="input-group-btn">
-                <button class="button button-uppercase button-primary" data-lock="true" data-unlock-txt="发布你的留言" data-lock-txt="留言提交中" id="sendBtn" type="button">发布你的留言</button>
+                <button class="button button-uppercase button-primary" data-lock="true" data-unlock-txt="留 言" data-lock-txt="提交中" id="sendBtn" type="button">留 言</button>
             </span>
+        </div>
+        <div class="mg-top-50 pd-left-0">
+            <h5 class="message-list-header">同是天涯沦落人 <span class="label label-default"><?php echo $message_info->count;?></span></h5>
+            <?php
+            foreach($message_comment as $data){
+                $userInfo = 'Mr .';
+                if($data->user_sex) $userInfo = 'Mrs .';
+                $userInfo .= $data->user_surname;
+                echo  '<div class="input-group message-list">
+<span class="input-group-addon">'.$userInfo.' ：</span>
+    <div class="form-control">'.$data->comment_content.'</div>
+</div>';
+            }
+            ?>
         </div>
     </div>
     <div class="col-md-4 warp-panel-tips hidden-xs hidden-sm">
@@ -66,24 +74,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="panel-heading txt-shadow"><strong>写在此处的一些话</strong></div>
             <div class="panel-body">
                 <p class="text-muted">iLiDan 不会泄露您的名字，当你发布消息或留言时，将会展示出你的姓氏。如：Mr .王、Mrs .刘<br /><br />
-                网络是嘈杂的，任何事情需要的是您自己的主观判断，希望您能尽量客观、实事的评说。<br /><br />
-                如果你的评论是无任何参考价值，或虚假的，那么系统会进行删除处理。</p>
+                    网络是嘈杂的，任何事情需要的是您自己的主观判断，希望您能尽量客观、实事的评说。<br /><br />
+                    如果你的评论是无任何参考价值，或虚假的，那么系统会进行删除处理。</p>
             </div>
         </div>
-    </div>
-    <div class="col-sm-12 col-md-8 mg-top-50 pd-left-0">
-        <h5 class="message-list-header">同是天涯沦落人 <span class="label label-default"><?php echo $message_info->count;?></span></h5>
-        <?php
-        foreach($message_comment as $data){
-            $userInfo = 'Mr .';
-            if($data->user_sex) $userInfo = 'Mrs .';
-            $userInfo .= $data->user_surname;
-            echo  '<div class="input-group message-list">
-<span class="input-group-addon">'.$userInfo.' ：</span>
-    <div class="form-control">'.$data->comment_content.'</div>
-</div>';
-        }
-        ?>
+        <div class="panel panel-info">
+            <div class="panel-heading txt-shadow"><strong>* 留言规范</strong></div>
+            <div class="panel-body">
+                <p class="text-muted">请不要说诸如「很坑」「垃圾」之类没有切实意义的词句。<br /><br />
+                    在每则信息下，暂时每个用户只有一次留言的机会。<br /><br />
+                    请简明精要（20字内）的阐述你在这家公司碰到的坑。如下例：</p>
+                <ul>
+                    <li>面试官技术水平很差</li>
+                    <li>公司不给社保</li>
+                    <li>工资喜欢拖欠</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 

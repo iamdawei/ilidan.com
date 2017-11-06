@@ -18,7 +18,7 @@ class User extends API_Conotroller
     {
         switch (REQUEST_METHOD) {
             case REQUEST_GET :
-                $this->ajax_return(400,MESSAGE_ERROR_PARAMETER);
+                $this->ajax_return(400,MESSAGE_ERROR_REQUEST_TYPE);
                 break;
             case REQUEST_PUT :
                 $this->update();
@@ -60,8 +60,7 @@ class User extends API_Conotroller
     }
 
     private function update(){
-        $user_id = $this->uri->segment(2, 0);
-        if($user_id != $this->USER_ID) $this->ajax_return(400,MESSAGE_ERROR_WARNING_AUTH);
+        $user_id = $this->USER_ID;
 
         $data = array(
             'name' =>  $this->input->input_stream('name'),
@@ -73,6 +72,38 @@ class User extends API_Conotroller
         if ($re === false) {
             $this->ajax_return(400,MESSAGE_ERROR_DATA_WRITE);
         }else
-            $this->ajax_return(200,MESSAGE_SUCCESS);
+            $this->ajax_return(200,MESSAGE_SUCCESS,$this->User_model->last_sql());
+    }
+
+    public function password(){
+        if(REQUEST_METHOD !== REQUEST_POST) $this->ajax_return(400,MESSAGE_ERROR_REQUEST_TYPE);
+
+        $user_id = $this->USER_ID;
+
+        $oldPass =md5($this->input->post('oldPassword').ENCRYPT_KEY);
+        $where['user_id'] = $user_id;
+
+        $rePass = $this->User_model->get($where,'user_password');
+        if($oldPass != $rePass['user_password'])
+        {
+            $this->ajax_return(400, MESSAGE_ERROR_CHANGE_PASSWORD,$this->User_model->last_sql());
+        }
+
+        $newpassword = $this->input->post('newPassword');
+        $confirm = $this->input->post('cNewPassword');
+
+        if($newpassword !== $confirm){
+            $this->ajax_return(400, MESSAGE_ERROR_PARAMETER_CONFIRM);
+        }
+
+        $newpassword = md5($newpassword.ENCRYPT_KEY);
+        $upData['user_password'] = $newpassword;
+        $res = $this->User_model->update($user_id,$upData);
+
+        if ($res < 0) {
+            $this->ajax_return(400, MESSAGE_ERROR_PARAMETER);
+        } else {
+            $this->ajax_return(200, MESSAGE_SUCCESS);
+        }
     }
 }
