@@ -5,10 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         margin-top:120px;
     }
     .message-info .form-control{
-        height:40px;
-        font-size: 18px;
-        border-radius: 0;
-        border-color:#1b9af7;
+
     }
     .text-muted{
         line-height: 1.5em;
@@ -42,17 +39,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         padding-bottom: 12px;
         border-color: #DEDEDE;
     }
+
 </style>
 <div class="container message-info">
     <div class="col-sm-12 col-md-8 pd-left-0">
         <h3 class="txt-shadow"><?php echo $message_info->company_name;?></h3>
         <h4><?php echo "$message_info->company_city , $message_info->surname";?> , <?php echo date('Y.m.d',strtotime($message_info->message_datetime));?></h4>
         <div><?php echo nl2br($message_info->message_content);?></div>
-        <div class="col-md-8 input-group mg-top-50">
-            <input type="text" class="form-control" placeholder="巧啊，你也被这家公司支配过。" id="messageInput" maxlength="20" />
-            <span class="input-group-btn">
-                <button class="button button-uppercase button-primary" data-lock="true" data-unlock-txt="留 言" data-lock-txt="提交中" id="sendBtn" type="button">留 言</button>
-            </span>
+        <div class="row">
+            <div class="col-md-8 form-group mg-top-50">
+                <label class="control-label" for="messageInput">说点什么</label>
+                <textarea class="form-control" name="comment_content" id="messageInput" maxlength="100" rows="3" style="resize:none;margin-bottom: 6px;" required></textarea>
+                <p class="help-block">在 100 字内，说说你在这家公司遇到的人或事。</p>
+                <button class="button button-primary button-rounded button-small" data-lock="true" data-unlock-txt="留 言" data-lock-txt="提交中" id="sendBtn" type="button">留 言</button>
+            </div>
         </div>
         <div class="mg-top-50 pd-left-0">
             <h5 class="message-list-header">同是天涯沦落人 <span class="label label-default"><?php echo $message_info->count;?></span></h5>
@@ -82,13 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="panel-heading txt-shadow"><strong>* 留言规范</strong></div>
             <div class="panel-body">
                 <p class="text-muted">请不要说诸如「很坑」「垃圾」之类没有切实意义的词句。<br /><br />
-                    在每则信息下，暂时每个用户只有一次留言的机会。<br /><br />
-                    请简明精要（20字内）的阐述你在这家公司碰到的坑。如下例：</p>
-                <ul>
-                    <li>面试官技术水平很差</li>
-                    <li>公司不给社保</li>
-                    <li>工资喜欢拖欠</li>
-                </ul>
+                    在每则信息下，暂时每个用户只有一次留言的机会。
             </div>
         </div>
     </div>
@@ -100,7 +94,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $("#sendBtn").on('click',function(){
             if(!ilidanUid) return alert('你还没有登录');
             var messageValue = $.trim($("#messageInput").val());
-            if(messageValue.length > 0 && messageValue.length < 21){
+            if(messageValue.length > 0 && messageValue.length < 101){
 
                 ILIDAN_AJAX_OBJ = $(this);
                 $.ajax({
@@ -123,7 +117,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             }else
             {
-                alert('请输入 20 字以内留言');
+                alert('请输入 100 字以内留言');
             }
         });
     }

@@ -135,9 +135,9 @@
             data:$('#joinForm').serialize(),
             success:function(data){
                 if(data.code == 200) {
-                    alert('注册成功，即将跳转到登陆。');
+                    submit_lock = false;
                     setTimeout(function(){window.location.href = '/login';},2000);
-
+                    alert('注册成功，即将跳转到登陆。');
                 }
                 else alert(data.info);
             }

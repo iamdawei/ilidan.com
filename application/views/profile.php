@@ -153,6 +153,7 @@
                 complete:function(){
                     btnThat.text('修改密码');
                     pass_lock = false;
+                    document.getElementById('passForm').reset();
                 }
             });
         });
