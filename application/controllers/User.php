@@ -53,6 +53,7 @@ class User extends API_Conotroller
             $insertData['user_password'] = $password;
             $insertData['surname'] = $surname;
             $insertData['sex'] = $sex;
+            $insertData['register_datetime'] = date('Y-m-d H:i:s',time());
 
             $re = $this->User_model->insert($insertData);
             $this->ajax_return(200, MESSAGE_SUCCESS, $re);
