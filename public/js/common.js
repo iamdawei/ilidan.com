@@ -81,7 +81,7 @@ function ilidan_ajax_complete()
 
 function ilidan_ajax_error()
 {
-    alert('warming : ajax , site error.');
+    alert('warning : ajax , site error.');
 }
 
 function request_lock()
